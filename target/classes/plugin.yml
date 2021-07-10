@@ -2,3 +2,8 @@ name: Varo
 version: 0.1
 author: clyko & dplat
 main: com.varo.Varo
+
+commands:
+  start:
+    description: Startet Varo
+    usage: /<command>

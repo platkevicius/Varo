@@ -1,11 +1,10 @@
 package com.varo;
 
-import com.varo.commands.CommandCountdown;
-import com.varo.listener.ListenerJoinEvent;
+import com.varo.commands.Start;
+import com.varo.listener.JoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Varo extends JavaPlugin {
-
     @Override
     public void onDisable() {
     }
@@ -20,11 +19,11 @@ public class Varo extends JavaPlugin {
 
 
     private void registerCommands() {
-        //getCommand("start").setExecutor(new CommandCountdown());
+        getCommand("start").setExecutor(new Start(this));
     }
 
     private void registerListener() {
-        getServer().getPluginManager().registerEvents(new ListenerJoinEvent(this), this);
+        getServer().getPluginManager().registerEvents(new JoinEvent(this), this);
     }
 
 }

@@ -11,7 +11,7 @@ public class Game {
     private GameState current;
 
     private Game() {
-        setCurrent(ingame);
+        setCurrent(warmup);
     }
 
     public static Game instance() {
