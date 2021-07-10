@@ -1,2 +1,4 @@
-package com.varo;public class Varo {
+package com.varo;
+
+public class Varo {
 }
