@@ -1,5 +1,7 @@
 package com.varo;
 
+import com.varo.commands.CommandCountdown;
+import com.varo.listener.ListenerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Varo extends JavaPlugin {
@@ -18,11 +20,11 @@ public class Varo extends JavaPlugin {
 
 
     private void registerCommands() {
-
+        //getCommand("start").setExecutor(new CommandCountdown());
     }
 
     private void registerListener() {
-
+        getServer().getPluginManager().registerEvents(new ListenerJoinEvent(this), this);
     }
 
 }
