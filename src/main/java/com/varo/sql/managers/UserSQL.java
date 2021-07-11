@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
@@ -80,15 +81,62 @@ public class UserSQL {
     }
 
     public boolean isOnline(Player player) {
-        return false;
+        boolean online = false;
+        try {
+            PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement("SELECT online FROM User WHERE UUID = ?");
+            preparedStatement.setString(1, player.getUniqueId().toString());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            online = resultSet.getBoolean(1);
+            preparedStatement.close();
+            resultSet.close();
+        }
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return online;
     }
 
     public int getKills(Player player) {
-        return 0;
+        int kills = 0;
+
+        try {
+            PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement("SELECT COUNT(id) AS killCount FROM UserKills WHERE killer = ?");
+            preparedStatement.setString(1, player.getUniqueId().toString());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+
+            kills = resultSet.getInt("killCount");
+
+            preparedStatement.close();
+            resultSet.close();
+        }
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return kills;
     }
 
-    public boolean isAlive() {
-        return false;
+    public boolean isAlive(Player player) {
+        boolean alive = false;
+        try {
+            PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement("SELECT alive FROM User WHERE UUID = ?");
+            preparedStatement.setString(1, player.getUniqueId().toString());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            alive = resultSet.getBoolean(1);
+
+            preparedStatement.close();
+            resultSet.close();
+        }
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return alive;
     }
 
 }
