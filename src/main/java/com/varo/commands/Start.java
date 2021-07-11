@@ -34,11 +34,11 @@ public class Start implements CommandExecutor {
                     @Override
                     public void run() {
                         if (counter == 0) {
-                            chatUtil.sendAllPlayers("Mögen die Spiele beginnen!");
+                            chatUtil.sendAllPlayers(ChatColor.MAGIC + "Mögen die Spiele beginnen!");
                             Game.instance().setCurrent(GameState.INGAME);
                             scheduler.cancelTasks(plugin);
                         } else if (counter % 5 == 0 || counter == 4 || counter == 3 || counter == 2 || counter == 1) {
-                            chatUtil.sendAllPlayers(ChatColor.GREEN + "Varo " + ChatColor.BLUE + "beginnt in " + ChatColor.GREEN + counter + ChatColor.BLUE + " Sekunden");
+                            chatUtil.sendAllPlayers(ChatColor.BLUE + "Varo " + ChatColor.GOLD + "beginnt in " + ChatColor.BLUE + counter + ChatColor.GOLD + " Sekunden");
                         }
                         counter--;
                     }

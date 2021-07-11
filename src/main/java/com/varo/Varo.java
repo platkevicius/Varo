@@ -1,10 +1,12 @@
 package com.varo;
 
 import com.varo.commands.Start;
+import com.varo.listener.Basic;
 import com.varo.listener.JoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Varo extends JavaPlugin {
+
     @Override
     public void onDisable() {
     }
@@ -24,6 +26,7 @@ public class Varo extends JavaPlugin {
 
     private void registerListener() {
         getServer().getPluginManager().registerEvents(new JoinEvent(this), this);
+        getServer().getPluginManager().registerEvents(new Basic(), this);
     }
 
 }

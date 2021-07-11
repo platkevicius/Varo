@@ -23,9 +23,13 @@ public class JoinEvent implements Listener {
 
     @EventHandler
     public void playerJoined(PlayerJoinEvent event) {
-        event.setJoinMessage(ChatColor.RED + event.getPlayer().getName() + ChatColor.BLUE + " hat den Server betreten!");
-        event.getPlayer();
-        if (Game.instance().getCurrent() == GameState.INGAME) {
+        if (Game.instance().getCurrent() == GameState.WARMUP) {
+            event.getPlayer().setFoodLevel(20);
+            event.getPlayer().setHealth(20);
+            event.setJoinMessage(ChatColor.RED + event.getPlayer().getName() + ChatColor.GOLD + " hat den Server betreten!");
+        }
+        else if (Game.instance().getCurrent() == GameState.INGAME) {
+            event.setJoinMessage(ChatColor.RED + event.getPlayer().getName() + ChatColor.GOLD + " hat den Server betreten!");
 
             BukkitScheduler countdown = Bukkit.getScheduler();
             countdown.scheduleSyncRepeatingTask(plugin, new Runnable() {
@@ -34,10 +38,10 @@ public class JoinEvent implements Listener {
                 @Override
                 public void run() {
                     if (counter == 0) {
-                        chatUtil.sendAllPlayers(ChatColor.RED + event.getPlayer().getName() + ChatColor.BLUE + " ist jetzt angreifbar!");
+                        chatUtil.sendAllPlayers(ChatColor.RED + event.getPlayer().getName() + ChatColor.GOLD + " ist jetzt angreifbar!");
                         countdown.cancelTasks(plugin);
                     } else if (counter % 5 == 0 || counter == 4 || counter == 3 || counter == 2 || counter == 1) {
-                        chatUtil.sendAllPlayers(ChatColor.RED + event.getPlayer().getName() + ChatColor.BLUE + " ist in " + counter + " Sekunden angreifbar!");
+                        chatUtil.sendAllPlayers(ChatColor.RED + event.getPlayer().getName() + ChatColor.GOLD + " ist in " + ChatColor.RED + counter + ChatColor.RED + " Sekunden angreifbar!");
                     }
                     counter--;
                 }
@@ -45,19 +49,19 @@ public class JoinEvent implements Listener {
 
             BukkitScheduler timeLimit = Bukkit.getScheduler();
             timeLimit.scheduleSyncRepeatingTask(plugin, new Runnable() {
-                int counter = 60;
+                int counter = 30;
 
                 @Override
                 public void run() {
                     if (counter == 0) {
-                        chatUtil.sendAllPlayers(ChatColor.RED + event.getPlayer().getName() + ChatColor.BLUE + " hat das Spiel verlassen");
+                        chatUtil.sendAllPlayers(ChatColor.RED + event.getPlayer().getName() + ChatColor.GOLD + " hat das Spiel verlassen");
                         event.getPlayer().kickPlayer("Deine heutige Zeit auf dem Server ist aufgebraucht");
                         timeLimit.cancelTasks(plugin);
                     }
                     else if (counter == 15 || counter == 10 || counter == 5 || counter == 4 || counter == 3 || counter == 2 || counter == 1) {
-                        chatUtil.sendAllPlayers(ChatColor.RED + event.getPlayer().getName() + ChatColor.BLUE + " wird in " + counter + " Sekunden vom Server gekickt!");
+                        chatUtil.sendAllPlayers(ChatColor.RED + event.getPlayer().getName() + ChatColor.GOLD + " wird in " + counter + " Sekunden vom Server gekickt!");
                     }
-                    counter --;
+                    counter--;
                 }
             }, 0L, 20L);
         }
