@@ -2,6 +2,7 @@ package com.varo.listener;
 
 import com.varo.Game;
 import com.varo.GameState;
+import com.varo.runnables.CountdownLogin;
 import com.varo.util.ChatUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -28,31 +29,21 @@ public class JoinEvent implements Listener {
             event.getPlayer().setFoodLevel(20);
             event.getPlayer().setHealth(20);
             event.setJoinMessage(ChatColor.RED + event.getPlayer().getName() + ChatColor.GOLD + " hat den Server betreten!");
-        }
-        else if (Game.instance().getCurrent() == GameState.INGAME) {
+        } else if (Game.instance().getCurrent() == GameState.INGAME) {
             Game.instance().getInvulnerable().add(event.getPlayer());
             event.getPlayer().setGameMode(GameMode.ADVENTURE);
 
             event.setJoinMessage(ChatColor.RED + event.getPlayer().getName() + ChatColor.GOLD + " hat den Server betreten!");
+
             BukkitScheduler countdown = Bukkit.getScheduler();
 
-            countdown.scheduleSyncRepeatingTask(plugin, new Runnable() {
-                int counter = 15;
+            if (!Game.instance().getServerTime().containsKey(event.getPlayer())) {
+                //Game.instance().getServerTime().put(event.getPlayer(), new Pair<>(10, ingameTime));
 
-
-                @Override
-                public void run() {
-                    if (counter == 0) {
-                        chatUtil.sendAllPlayers(ChatColor.RED + event.getPlayer().getName() + ChatColor.GOLD + " ist jetzt angreifbar!");
-                        Game.instance().getInvulnerable().remove(event.getPlayer());
-                        event.getPlayer().setGameMode(GameMode.SURVIVAL);
-                        countdown.cancelTasks(plugin);
-                    } else if (counter % 5 == 0 || counter == 4 || counter == 3 || counter == 2 || counter == 1) {
-                        chatUtil.sendAllPlayers(ChatColor.RED + event.getPlayer().getName() + ChatColor.GOLD + " ist in " + ChatColor.RED + counter + ChatColor.RED + " Sekunden angreifbar!");
-                    }
-                    counter--;
-                }
-            }, 0L, 20L);
+                CountdownLogin countdownLogin = new CountdownLogin(plugin, event.getPlayer());
+                final int id = countdown.scheduleSyncRepeatingTask(plugin, countdownLogin, 0L, 20L);
+                countdownLogin.setTaskID(id);
+            }
         }
     }
 }

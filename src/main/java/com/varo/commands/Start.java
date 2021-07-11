@@ -24,20 +24,21 @@ public class Start implements CommandExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (commandSender instanceof Player) {
             Player player = (Player) commandSender;
-            if (player.getName().equals("PlayNationDE")) {
+            if (player.getName().equals("PlayNationDE") && Game.instance().getCurrent() == GameState.WARMUP && !Game.instance().isStarted()) {
+                Game.instance().setStarted(true);
                 player.getWorld().setTime(6000);
                 BukkitScheduler scheduler = Bukkit.getScheduler();
                 scheduler.scheduleSyncRepeatingTask(plugin, new Runnable() {
 
-                    int counter = 30;
+                    int counter = 1;
 
                     @Override
                     public void run() {
                         if (counter == 0) {
                             Game.instance().getInvulnerable().clear();
                             Game.instance().setCurrent(GameState.INGAME);
-                            Game.instance().setServerTime(1200);
                             chatUtil.sendAllPlayers(ChatColor.DARK_RED + "Mögen die Spiele beginnen!");
+                            Game.instance().setPlayTime(1200);
                             scheduler.cancelTasks(plugin);
                         } else if (counter % 5 == 0 || counter == 4 || counter == 3 || counter == 2 || counter == 1) {
                             chatUtil.sendAllPlayers(ChatColor.BLUE + "Varo " + ChatColor.GOLD + "beginnt in " + ChatColor.BLUE + counter + ChatColor.GOLD + " Sekunden");

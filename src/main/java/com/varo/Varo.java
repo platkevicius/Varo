@@ -3,6 +3,7 @@ package com.varo;
 import com.varo.commands.Start;
 import com.varo.listener.Basic;
 import com.varo.listener.JoinEvent;
+import com.varo.listener.LeaveEvent;
 import com.varo.sql.MySQL;
 import com.varo.sql.SqlCredentials;
 import com.varo.sql.managers.BorderSQL;
@@ -57,6 +58,7 @@ public class Varo extends JavaPlugin {
     private void registerListener() {
         getServer().getPluginManager().registerEvents(new JoinEvent(this), this);
         getServer().getPluginManager().registerEvents(new Basic(), this);
+        getServer().getPluginManager().registerEvents(new LeaveEvent(this), this);
     }
 
 }
