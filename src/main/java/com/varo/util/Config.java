@@ -17,6 +17,7 @@ public class Config {
     }
 
     public void setUp() {
+        configuration.options().copyDefaults(true);
         configuration.addDefault("prefix", "[Varo] ");
 
         try {
