@@ -19,8 +19,8 @@ public class MySQL {
             connection.createStatement().execute("CREATE TABLE IF NOT EXISTS User (UUID VARCHAR(64) PRIMARY KEY," +
                                                  "alive BOOLEAN, lastLogging DATE, online BOOLEAN, x DOUBLE, y DOUBLE, z DOUBLE);");
             connection.createStatement().execute("CREATE TABLE IF NOT EXISTS UserKills (id INT PRIMARY KEY, killer VARCHAR(64), killed VARCHAR(64));");
-            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS LootBox(id INT PRIMARY KEY AUTO_INCREMENT, x INT, y INT, z INT, opened BOOLEAN)");
-            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS BorderCoordinates(id INT PRIMARY KEY AUTO_INCREMENT, x INT, y INT, z INT, radius INT)");
+            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS LootBox(id INT PRIMARY KEY AUTO_INCREMENT, x DOUBLE, y DOUBLE, z DOUBLE, opened BOOLEAN)");
+            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS BorderCoordinates(id INT PRIMARY KEY AUTO_INCREMENT, x DOUBLE, y DOUBLE, z DOUBLE, radius INT)");
         }
         catch (SQLException throwables) {
             throwables.printStackTrace();
