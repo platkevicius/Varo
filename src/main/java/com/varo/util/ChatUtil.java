@@ -5,8 +5,8 @@ import org.bukkit.entity.Player;
 
 public class ChatUtil {
 
-    private String prefix;
-    private Config config;
+    private final String prefix;
+    private final Config config;
 
     public ChatUtil() {
         config = new Config();

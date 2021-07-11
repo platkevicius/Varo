@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class MySQL {
 
-    private SqlCredentials sqlCredentials;
+    private final SqlCredentials sqlCredentials;
 
     private Connection connection;
 
@@ -14,14 +14,26 @@ public class MySQL {
         this.sqlCredentials = sqlCredentials;
     }
 
-    public void setUp() {}
+    public void setUp() {
+        try {
+            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS User (UUID VARCHAR(64) PRIMARY KEY," +
+                                                 "alive BOOLEAN, lastLogging DATE, online BOOLEAN, x DOUBLE, y DOUBLE, z DOUBLE);");
+            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS UserKills (id INT PRIMARY KEY, killer VARCHAR(64), killed VARCHAR(64));");
+            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS LootBox(id INT PRIMARY KEY AUTO_INCREMENT)");
+        }
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 
     public void connect() {
         if (!isConnected()) {
             try {
-                connection = DriverManager.getConnection("");
+                Class.forName("com.mysql.jdbc.Driver");
+                connection = DriverManager.getConnection("jdbc:mysql://" + sqlCredentials.getHost() +
+                                                         ":" + sqlCredentials.getPort() + "/" + sqlCredentials.getDb(), sqlCredentials.getUsername(), sqlCredentials.getPassword());
             }
-            catch (SQLException throwables) {
+            catch (Exception throwables) {
                 throwables.printStackTrace();
             }
         }

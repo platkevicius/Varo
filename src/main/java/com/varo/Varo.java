@@ -3,9 +3,12 @@ package com.varo;
 import com.varo.commands.Start;
 import com.varo.listener.Basic;
 import com.varo.listener.JoinEvent;
+import com.varo.util.Config;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Varo extends JavaPlugin {
+
+    private Config config;
 
     @Override
     public void onDisable() {
@@ -13,8 +16,10 @@ public class Varo extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        config = new Config();
         System.out.println("Plugin Varo started");
 
+        config.setUp();
         registerCommands();
         registerListener();
     }
