@@ -30,4 +30,17 @@ public class LootBoxSQL {
         }
     }
 
+    public void setOpened(int id) {
+        try {
+            PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement("UPDATE LootBox SET opened = " + false + " WHERE " +
+                                                                                         "id = '" + id + "'");
+            preparedStatement.execute();
+
+            preparedStatement.close();
+        }
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
 }
