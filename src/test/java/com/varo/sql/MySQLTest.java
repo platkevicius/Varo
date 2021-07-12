@@ -1,26 +1,61 @@
 package com.varo.sql;
 
-import org.junit.Before;
-import org.junit.Test;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
-import static org.junit.Assert.*;
+public class MySQL {
 
-public class MySQLTest {
+    private final SqlCredentials sqlCredentials;
 
-    private SqlCredentials sqlCredentials;
-    private MySQL mySQL;
+    private Connection connection;
 
-    @Before
+    public MySQL(SqlCredentials sqlCredentials) {
+        this.sqlCredentials = sqlCredentials;
+    }
+
     public void setUp() {
-        sqlCredentials = new SqlCredentials("", "", "", "");
-        mySQL = new MySQL(sqlCredentials);
+        try {
+            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS User (UUID VARCHAR(64) PRIMARY KEY," +
+                    "alive BOOLEAN, lastLogging DATE, online BOOLEAN, x DOUBLE, y DOUBLE, z DOUBLE);");
+            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS UserKills (id INT PRIMARY KEY AUTO_INCREMENT, killer VARCHAR(64), killed VARCHAR(64));");
+            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS LootBox(id INT PRIMARY KEY AUTO_INCREMENT, x DOUBLE, y DOUBLE, z DOUBLE, opened BOOLEAN)");
+            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS BorderCoordinates(id INT PRIMARY KEY AUTO_INCREMENT, x DOUBLE, y DOUBLE, z DOUBLE, radius INT)");
+        }
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
-    @Test
-    public void testConnection() {
-        mySQL.connect();
+    public void connect() {
+        if (!isConnected()) {
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                connection = DriverManager.getConnection("jdbc:mysql://" + sqlCredentials.getHost() +
+                        ":" + sqlCredentials.getPort() + "/" + sqlCredentials.getDb(), sqlCredentials.getUsername(), sqlCredentials.getPassword());
+            }
+            catch (Exception throwables) {
+                throwables.printStackTrace();
+            }
+        }
     }
 
+    public void closeConnection() {
+        if (isConnected()) {
+            try {
+                connection.close();
+            }
+            catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+    }
 
+    public boolean isConnected() {
+        return connection != null;
+    }
 
+    public Connection getConnection() {
+        return connection;
+    }
 }
