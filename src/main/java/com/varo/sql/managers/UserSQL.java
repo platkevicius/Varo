@@ -37,12 +37,24 @@ public class UserSQL {
         }
     }
 
+    public void deleteUser(Player player) {
+        try {
+            PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement("DELETE FROM User WHERE UUID = ?");
+            preparedStatement.setString(1, player.getUniqueId().toString());
+            preparedStatement.execute();
+            preparedStatement.close();
+        }
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
     public void addKill(Player killer, Player killed) {
         try {
             PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement("INSERT INTO UserKills (killer, killed) VALUES (?, ?)");
 
             preparedStatement.setString(1, killer.getUniqueId().toString());
-            preparedStatement.setString(2, killer.getUniqueId().toString());
+            preparedStatement.setString(2, killed.getUniqueId().toString());
 
             preparedStatement.execute();
             preparedStatement.close();
@@ -87,7 +99,7 @@ public class UserSQL {
             preparedStatement.setString(1, player.getUniqueId().toString());
 
             ResultSet resultSet = preparedStatement.executeQuery();
-
+            resultSet.next();
             online = resultSet.getBoolean(1);
             preparedStatement.close();
             resultSet.close();
@@ -128,6 +140,7 @@ public class UserSQL {
             preparedStatement.setString(1, player.getUniqueId().toString());
 
             ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
             alive = resultSet.getBoolean(1);
 
             preparedStatement.close();

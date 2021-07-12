@@ -3,8 +3,6 @@ package com.varo.sql;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class MySQLTest {
 
     private SqlCredentials sqlCredentials;
@@ -12,15 +10,16 @@ public class MySQLTest {
 
     @Before
     public void setUp() {
-        sqlCredentials = new SqlCredentials("", "", "", "");
+        sqlCredentials = new SqlCredentials("root", "", "localhost", "test");
         mySQL = new MySQL(sqlCredentials);
-    }
 
-    @Test
-    public void testConnection() {
         mySQL.connect();
     }
 
+    @Test
+    public void defaultTables() {
+        mySQL.setUp();
+    }
 
 
 }
