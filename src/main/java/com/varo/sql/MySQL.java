@@ -18,7 +18,7 @@ public class MySQL {
         try {
             connection.createStatement().execute("CREATE TABLE IF NOT EXISTS User (UUID VARCHAR(64) PRIMARY KEY," +
                                                  "alive BOOLEAN, lastLogging DATE, online BOOLEAN, x DOUBLE, y DOUBLE, z DOUBLE);");
-            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS UserKills (id INT PRIMARY KEY, killer VARCHAR(64), killed VARCHAR(64));");
+            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS UserKills (id INT PRIMARY KEY AUTO_INCREMENT, killer VARCHAR(64), killed VARCHAR(64));");
             connection.createStatement().execute("CREATE TABLE IF NOT EXISTS LootBox(id INT PRIMARY KEY AUTO_INCREMENT, x DOUBLE, y DOUBLE, z DOUBLE, opened BOOLEAN)");
             connection.createStatement().execute("CREATE TABLE IF NOT EXISTS BorderCoordinates(id INT PRIMARY KEY AUTO_INCREMENT, x DOUBLE, y DOUBLE, z DOUBLE, radius INT)");
         }
@@ -30,7 +30,7 @@ public class MySQL {
     public void connect() {
         if (!isConnected()) {
             try {
-                Class.forName("com.mysql.jdbc.Driver");
+                Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager.getConnection("jdbc:mysql://" + sqlCredentials.getHost() +
                                                          ":" + sqlCredentials.getPort() + "/" + sqlCredentials.getDb(), sqlCredentials.getUsername(), sqlCredentials.getPassword());
             }
