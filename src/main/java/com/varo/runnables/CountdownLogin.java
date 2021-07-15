@@ -14,7 +14,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 public class CountdownLogin implements Runnable {
     private final Plugin plugin;
     private final Player player;
-    private int counter = 15;
+    private int counter = 5;
     private ChatUtil chatUtil = new ChatUtil();
     private int taskID;
 
@@ -27,18 +27,17 @@ public class CountdownLogin implements Runnable {
 
     @Override
     public void run() {
-        if (counter == 0) {
+        if (counter == 0 && player.isOnline()) {
             chatUtil.sendAllPlayers(ChatColor.RED + player.getName() + ChatColor.GOLD + " ist jetzt angreifbar!");
-            Game.instance().getInvulnerable().remove(player);
+            Game.instance().getInvulnerable().remove(player.getUniqueId());
             player.getPlayer().setGameMode(GameMode.SURVIVAL);
 
             CountdownLogout countdownLogout = new CountdownLogout(plugin, player);
             final int idTime = ingameTime.scheduleSyncRepeatingTask(plugin, countdownLogout , 0L, 20L);
-            Game.instance().getServerTime().put(player, new Pair<>(60, ingameTime));
             countdownLogout.setTaskID(idTime);
 
             plugin.getServer().getScheduler().cancelTask(taskID);
-        } else if (counter % 5 == 0 || counter == 4 || counter == 3 || counter == 2 || counter == 1) {
+        } else if ((counter % 5 == 0 || counter == 4 || counter == 3 || counter == 2 || counter == 1) && player.isOnline()) {
             chatUtil.sendAllPlayers(ChatColor.RED + player.getName() + ChatColor.GOLD + " ist in " + ChatColor.RED + counter + ChatColor.GOLD + " Sekunden angreifbar!");
         }
         counter--;

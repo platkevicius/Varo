@@ -25,24 +25,30 @@ public class JoinEvent implements Listener {
     @EventHandler
     public void playerJoined(PlayerJoinEvent event) {
         if (Game.instance().getCurrent() == GameState.WARMUP) {
-            Game.instance().getInvulnerable().add(event.getPlayer());
+            Game.instance().getInvulnerable().add(event.getPlayer().getUniqueId());
             event.getPlayer().setFoodLevel(20);
             event.getPlayer().setHealth(20);
             event.setJoinMessage(ChatColor.RED + event.getPlayer().getName() + ChatColor.GOLD + " hat den Server betreten!");
+
         } else if (Game.instance().getCurrent() == GameState.INGAME) {
-            Game.instance().getInvulnerable().add(event.getPlayer());
-            event.getPlayer().setGameMode(GameMode.ADVENTURE);
+            if (Game.instance().getPlayTimeUsedUp().contains(event.getPlayer().getUniqueId()))
+                event.getPlayer().kickPlayer("Deine heutige Spielzeit ist aufgebraucht!");
 
-            event.setJoinMessage(ChatColor.RED + event.getPlayer().getName() + ChatColor.GOLD + " hat den Server betreten!");
+            else {
+                event.setJoinMessage(ChatColor.RED + event.getPlayer().getName() + ChatColor.GOLD + " hat den Server betreten!");
 
-            BukkitScheduler countdown = Bukkit.getScheduler();
+                if (!Game.instance().getAlreadyJoined().contains(event.getPlayer().getUniqueId()) && !Game.instance().getInvulnerable().contains(event.getPlayer().getUniqueId())) {
+                    Game.instance().getInvulnerable().add(event.getPlayer().getUniqueId());
+                    Game.instance().getAlreadyJoined().add(event.getPlayer().getUniqueId());
 
-            if (!Game.instance().getServerTime().containsKey(event.getPlayer())) {
-                //Game.instance().getServerTime().put(event.getPlayer(), new Pair<>(10, ingameTime));
+                    event.getPlayer().setGameMode(GameMode.ADVENTURE);
 
-                CountdownLogin countdownLogin = new CountdownLogin(plugin, event.getPlayer());
-                final int id = countdown.scheduleSyncRepeatingTask(plugin, countdownLogin, 0L, 20L);
-                countdownLogin.setTaskID(id);
+                    BukkitScheduler countdown = Bukkit.getScheduler();
+
+                    CountdownLogin countdownLogin = new CountdownLogin(plugin, event.getPlayer());
+                    final int id = countdown.scheduleSyncRepeatingTask(plugin, countdownLogin, 0L, 20L);
+                    countdownLogin.setTaskID(id);
+                }
             }
         }
     }

@@ -13,8 +13,4 @@ public class LeaveEvent implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler
-    public void disconnect(PlayerQuitEvent event) {
-        Game.instance().getServerTime().get(event.getPlayer()).getE().cancelTasks(plugin);
-    }
 }

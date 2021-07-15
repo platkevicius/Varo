@@ -2,15 +2,11 @@ package com.varo.runnables;
 
 import com.varo.Game;
 import com.varo.util.ChatUtil;
-import com.varo.util.Pair;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
-public class CountdownLogout implements Runnable{
+public class CountdownLogout implements Runnable {
     private final Plugin plugin;
     private final Player player;
     private ChatUtil chatUtil = new ChatUtil();
@@ -27,10 +23,14 @@ public class CountdownLogout implements Runnable{
     @Override
     public void run() {
         if (counter == 0) {
+            Game.instance().getAlreadyJoined().remove(player.getUniqueId());
+            Game.instance().getPlayTimeUsedUp().add(player.getUniqueId());
+
             player.kickPlayer("Deine heutige Zeit auf dem Server ist aufgebraucht!");
+
             plugin.getServer().getScheduler().cancelTask(taskID);
         }
-        else if (counter % 5 == 0 || counter == 4 || counter == 3 || counter == 2 || counter == 1)
+        else if ((counter == 15 || counter == 10 || counter == 5 || counter == 4 || counter == 3 || counter == 2 || counter == 1) && player.isOnline())
             chatUtil.sendAllPlayers(ChatColor.RED + player.getName() + ChatColor.GOLD + " wird in " + ChatColor.RED + counter + ChatColor.GOLD + " Sekunden vom Server gekickt!");
         counter--;
     }

@@ -2,13 +2,11 @@ package com.varo;
 
 import com.varo.util.Pair;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Game {
     private static Game game;
@@ -17,9 +15,9 @@ public class Game {
     private final GameState finish = GameState.FINISH;
     private GameState current;
     private boolean started = false;
-    private final List<Player> invulnerable = new ArrayList<>();
-    //private final HashMap<Player, Integer> playTime = new HashMap<>();
-    private final HashMap<Player, Pair<Integer, BukkitScheduler>> serverTime = new HashMap<>();
+    private final List<UUID> invulnerable = new ArrayList<>();
+    private final List<UUID> playTimeUsedUp = new ArrayList<>();
+    private final List<UUID> alreadyJoined = new ArrayList<>();
 
     private Game() {
         setCurrent(warmup);
@@ -43,23 +41,11 @@ public class Game {
         }
     }
 
-    public List<Player> getInvulnerable() {
+    public List<UUID> getInvulnerable() {
         return invulnerable;
     }
 
-    public HashMap<Player, Pair<Integer, BukkitScheduler>> getServerTime() {
-        return serverTime;
-    }
-
-    public void setPlayTime(int i) {
-            serverTime.replaceAll((k, v) -> new Pair<>(i, v.getE()));
-    }
-
     public void resetPlayTime() {
-        LocalTime midnight = LocalTime.parse("00:00");
-        if (LocalTime.now().equals(midnight)) {
-            serverTime.replaceAll((k, v) -> new Pair<>(60, v.getE()));
-        }
     }
 
     public boolean isStarted() {
@@ -68,5 +54,13 @@ public class Game {
 
     public void setStarted(boolean started) {
         this.started = started;
+    }
+
+    public List<UUID> getPlayTimeUsedUp() {
+        return playTimeUsedUp;
+    }
+
+    public List<UUID> getAlreadyJoined() {
+        return alreadyJoined;
     }
 }
