@@ -40,6 +40,7 @@ public class Varo extends JavaPlugin {
 
         System.out.println("Database is connecting...");
         mySQL.connect();
+        mySQL.setUp();
         System.out.println("Database has connected.");
 
         borderSQL = new BorderSQL(mySQL);
