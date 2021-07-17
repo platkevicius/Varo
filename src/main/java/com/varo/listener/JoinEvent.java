@@ -38,7 +38,7 @@ public class JoinEvent implements Listener {
             event.getPlayer().setHealth(20);
             event.setJoinMessage(ChatColor.RED + event.getPlayer().getName() + ChatColor.GOLD + " hat den Server betreten!");
 
-            event.getPlayer().setGameMode(GameMode.ADVENTURE);
+            event.getPlayer().setGameMode(GameMode.CREATIVE);
 
             userSQL.deleteUser(event.getPlayer());
             userSQL.createUser(event.getPlayer());

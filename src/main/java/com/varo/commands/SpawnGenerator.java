@@ -24,19 +24,54 @@ public class SpawnGenerator implements CommandExecutor {
 
             if (commander.getName().equals("PlayNationDE")) {
                 Location commanderLoc = commander.getLocation();
-                border.createBorder(commanderLoc, 100);
+                //border.createBorder(commanderLoc, 100);
 
                 int x = (int) Math.rint(commanderLoc.getX());
+                int y = (int) Math.rint(commanderLoc.getY());
                 int z = (int) Math.rint(commanderLoc.getZ());
 
                 int playersAmount = Integer.parseInt(strings[0]);
-                int distanceHoles = 8;
-                int radius = (int) Math.rint(distanceHoles * playersAmount / 2 * Math.PI);
+                int distanceHoles = 10;
+                int radius = (int) Math.rint((distanceHoles * playersAmount) / (2 * Math.PI));
 
-                Location cur = new Location(commander.getWorld(), 0, 0, 0);
+                Location right = new Location(commander.getWorld(), x + radius, y, z);
+                setHole(right, commander);
 
-                setHole(commander.getWorld(), cur, commander);
-                //commander.getLocation().getBlock().getType() == Material.AIR;
+                Location left = new Location(commander.getWorld(), x - radius, y, z);
+                setHole(left, commander);
+
+                if (playersAmount % 4 == 0) {
+                    Location up = new Location(commander.getWorld(), x, y, z + radius);
+                    setHole(up, commander);
+
+                    Location down = new Location(commander.getWorld(), x, y, z - radius);
+                    setHole(down, commander);
+                }
+
+                double arc = 2 * Math.PI / playersAmount;
+                double arcCounter = arc;
+
+                while (arcCounter < Math.PI / 2) {
+                    int xSwitch = (int) Math.rint(Math.cos(arcCounter)) * radius;
+                    int zSwitch = (int) Math.rint(Math.sin(arcCounter)) * radius;
+
+                    Location upperRight = new Location(commander.getWorld(), x + xSwitch, y, z + zSwitch);
+                    setHole(upperRight, commander);
+
+                    /*Location upperLeft = new Location(commander.getWorld(), x - xSwitch, y, Math.rint(z + zSwitch));
+                    setHole(upperLeft, commander);
+
+                    Location lowerRight = new Location(commander.getWorld(), x + xSwitch, y, z - zSwitch);
+                    setHole(lowerRight, commander);
+
+                    Location lowerLeft = new Location(commander.getWorld(), x - xSwitch, y, z - zSwitch);
+                    setHole(lowerLeft, commander);
+
+                     */
+
+                    arcCounter += arc;
+                }
+
                 return true;
             }
             return false;
@@ -44,38 +79,43 @@ public class SpawnGenerator implements CommandExecutor {
         return false;
     }
 
-    private void setHole(World world, Location current, Player commander) {
+    private Location normLoc(Location current, Player commander) {
 
-        Location cur = current;
-
-        if (cur.getBlock().getType() == Material.AIR) {
-
-            while (cur.getBlock().getType() == Material.AIR) {
-                cur = new Location(commander.getWorld(), cur.getX(), cur.getY() - 1, cur.getZ());
+        if (current.getBlock().getType() == Material.AIR) {
+            Location dummy = current;
+            while (dummy.getBlock().getType() == Material.AIR) {
+                int y = (int) Math.rint(dummy.getY());
+                dummy = new Location(commander.getWorld(), current.getX(), y - 1, current.getZ());
             }
+            Location cur = new Location(commander.getWorld(), current.getX(), dummy.getY(), current.getZ());
+            return cur;
 
-            cur.getBlock().setType(Material.AIR);
-
-            Location no = new Location(commander.getWorld(), cur.getX() + 1, cur.getY() + 1, cur.getZ());
-            no.getBlock().setType(Material.ACACIA_SLAB);
-
-            Location ea = new Location(commander.getWorld(), cur.getX(), cur.getY() + 1, cur.getZ() + 1);
-            ea.getBlock().setType(Material.ACACIA_SLAB);
-
-            Location so = new Location(commander.getWorld(), cur.getX() - 1, cur.getY() + 1, cur.getZ());
-            so.getBlock().setType(Material.ACACIA_SLAB);
-
-            Location we = new Location(commander.getWorld(), cur.getX(), cur.getY() + 1, cur.getZ() - 1);
-            we.getBlock().setType(Material.ACACIA_SLAB);
-        }
-
-        else {
-            Location curPlusOne = new Location(commander.getWorld(), cur.getX(), cur.getY() + 1, cur.getZ());
-
-            while (curPlusOne.getBlock().getType() != Material.AIR) {
-                curPlusOne = new Location(commander.getWorld(), curPlusOne.getX(), curPlusOne.getY() + 1, curPlusOne.getZ());
+        } else {
+            Location dummy = current;
+            while (dummy.getBlock().getType() != Material.AIR) {
+                int y = (int) Math.rint(dummy.getY());
+                dummy = new Location(commander.getWorld(), current.getX(), y + 1, current.getZ());
             }
-
+            Location cur = new Location(commander.getWorld(), current.getX(), dummy.getY() - 1, current.getZ());
+            return cur;
         }
+    }
+
+    private void setHole(Location current, Player commander) {
+        Location cur = normLoc(current, commander);
+
+        cur.getBlock().setType(Material.AIR);
+
+        Location no = new Location(commander.getWorld(), cur.getX() + 1, cur.getY() + 1, cur.getZ());
+        no.getBlock().setType(Material.ACACIA_SLAB);
+
+        Location ea = new Location(commander.getWorld(), cur.getX(), cur.getY() + 1, cur.getZ() + 1);
+        ea.getBlock().setType(Material.ACACIA_SLAB);
+
+        Location so = new Location(commander.getWorld(), cur.getX() - 1, cur.getY() + 1, cur.getZ());
+        so.getBlock().setType(Material.ACACIA_SLAB);
+
+        Location we = new Location(commander.getWorld(), cur.getX(), cur.getY() + 1, cur.getZ() - 1);
+        we.getBlock().setType(Material.ACACIA_SLAB);
     }
 }
