@@ -19,7 +19,6 @@ import java.util.HashMap;
 
 public class Start implements CommandExecutor {
     private final Plugin plugin;
-    private final ChatUtil chatUtil = new ChatUtil();
 
     public Start(Plugin plugin) {
         this.plugin = plugin;

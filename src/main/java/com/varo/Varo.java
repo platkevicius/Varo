@@ -1,10 +1,10 @@
 package com.varo;
 
 import com.varo.commands.Spawn;
+import com.varo.commands.SpawnGenerator;
 import com.varo.commands.Start;
-import com.varo.listener.Basic;
-import com.varo.listener.JoinEvent;
-import com.varo.listener.LeaveEvent;
+import com.varo.listener.*;
+import com.varo.models.Border;
 import com.varo.sql.MySQL;
 import com.varo.sql.SqlCredentials;
 import com.varo.sql.managers.BorderSQL;
@@ -26,6 +26,8 @@ public class Varo extends JavaPlugin {
     private LootBoxSQL lootBoxSQL;
     private UserSQL userSQL;
 
+    private Border border;
+
     @Override
     public void onDisable() {
         mySQL.closeConnection();
@@ -34,7 +36,7 @@ public class Varo extends JavaPlugin {
     @Override
     public void onEnable() {
         config = new Config();
-        sqlCredentials = new SqlCredentials("", "", "", "");
+        sqlCredentials = new SqlCredentials("root", "", "localhost", "test");
         MySQL mySQL = new MySQL(sqlCredentials);
 
         System.out.println("Plugin Varo started");
@@ -49,6 +51,7 @@ public class Varo extends JavaPlugin {
         borderSQL = new BorderSQL(mySQL);
         lootBoxSQL = new LootBoxSQL(mySQL);
         userSQL = new UserSQL(mySQL);
+        border = new Border(borderSQL);
 
         registerCommands();
         registerListener();
@@ -58,12 +61,15 @@ public class Varo extends JavaPlugin {
     private void registerCommands() {
         Objects.requireNonNull(getCommand("start")).setExecutor(new Start(this));
         Objects.requireNonNull(getCommand("spawn")).setExecutor(new Spawn());
+        Objects.requireNonNull(getCommand("generate")).setExecutor(new SpawnGenerator(border));
     }
 
     private void registerListener() {
-        getServer().getPluginManager().registerEvents(new JoinEvent(this), this);
+        getServer().getPluginManager().registerEvents(new JoinEvent(this, userSQL), this);
         getServer().getPluginManager().registerEvents(new Basic(), this);
         getServer().getPluginManager().registerEvents(new LeaveEvent(this), this);
+        getServer().getPluginManager().registerEvents(new LoginEvent(userSQL), this);
+        getServer().getPluginManager().registerEvents(new KillEvent(userSQL), this);
     }
 
 }

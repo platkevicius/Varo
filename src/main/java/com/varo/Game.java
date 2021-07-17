@@ -1,5 +1,6 @@
 package com.varo;
 
+import com.varo.models.Border;
 import com.varo.util.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -14,10 +15,14 @@ public class Game {
     private final GameState ingame = GameState.INGAME;
     private final GameState finish = GameState.FINISH;
     private GameState current;
+
     private boolean started = false;
+
     private final List<UUID> invulnerable = new ArrayList<>();
     private final List<UUID> playTimeUsedUp = new ArrayList<>();
     private final List<UUID> alreadyJoined = new ArrayList<>();
+
+    private Border border;
 
     private Game() {
         setCurrent(warmup);

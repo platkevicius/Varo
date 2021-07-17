@@ -1,7 +1,9 @@
 package com.varo.commands;
 
+import com.varo.Game;
 import com.varo.util.ChatUtil;
 import com.varo.util.LocationUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,6 +17,9 @@ public class Spawn implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (!(commandSender instanceof Player))
+            return true;
+
+        if (!commandSender.getName().equalsIgnoreCase("PlayNationDE"))
             return true;
 
         Player player = (Player) commandSender;

@@ -15,7 +15,7 @@ public class BorderSQL {
         this.mySQL = mySQL;
     }
 
-    public void createBorder(Location middle, int radius) {
+    public void createBorder(Location middle, double radius) {
         try {
             PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement("INSERT INTO BorderCoordinates(x, y, z, radius) VALUES (" +
                     "'" + middle.getX() + "', '" + middle.getY() + "', '" + middle.getZ() + "'," +
@@ -29,14 +29,14 @@ public class BorderSQL {
         }
     }
 
-    public int getRadius() {
-        int value = 0;
+    public double getRadius() {
+        double value = 0D;
         try {
             PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement("SELECT radius FROM BorderCoordinates");
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            resultSet.next();
-            value = resultSet.getInt(1);
+            if (resultSet.next())
+                value = resultSet.getDouble(1);
 
             preparedStatement.close();
             resultSet.close();
@@ -48,7 +48,7 @@ public class BorderSQL {
         return value;
     }
 
-    public void updateRadius(int newRadius) {
+    public void updateRadius(double newRadius) {
         try {
             PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement("UPDATE BorderCoordinates SET radius = '" + newRadius + "'");
 

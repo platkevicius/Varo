@@ -99,8 +99,8 @@ public class UserSQL {
             preparedStatement.setString(1, player.getUniqueId().toString());
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            online = resultSet.getBoolean(1);
+            if (resultSet.next())
+                online = resultSet.getBoolean(1);
             preparedStatement.close();
             resultSet.close();
         }
@@ -119,9 +119,9 @@ public class UserSQL {
             preparedStatement.setString(1, player.getUniqueId().toString());
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
 
-            kills = resultSet.getInt("killCount");
+            if (resultSet.next())
+                kills = resultSet.getInt("killCount");
 
             preparedStatement.close();
             resultSet.close();
@@ -134,14 +134,15 @@ public class UserSQL {
     }
 
     public boolean isAlive(Player player) {
-        boolean alive = false;
+        boolean alive = true;
         try {
             PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement("SELECT alive FROM User WHERE UUID = ?");
             preparedStatement.setString(1, player.getUniqueId().toString());
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            alive = resultSet.getBoolean(1);
+
+            if (resultSet.next())
+                alive = resultSet.getBoolean(1);
 
             preparedStatement.close();
             resultSet.close();
@@ -150,6 +151,20 @@ public class UserSQL {
             throwables.printStackTrace();
         }
         return alive;
+    }
+
+    public void dieUser(Player player) {
+        try {
+                PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement("UPDATE User SET alive = '0' WHERE UUID = ?;");
+
+            preparedStatement.setString(1, player.getUniqueId().toString());
+
+            preparedStatement.execute();
+            preparedStatement.close();
+        }
+        catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
 }

@@ -36,9 +36,8 @@ public class LootBoxSQL {
         try {
             PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement("SELECT opened FROM LootBox WHERE id = '" + id + "';");
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-
-            opened = resultSet.getBoolean(1);
+            if (resultSet.next())
+                opened = resultSet.getBoolean(1);
             preparedStatement.close();
             resultSet.close();
         }

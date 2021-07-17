@@ -13,7 +13,6 @@ public class Basic implements Listener {
 
     @EventHandler
     public void foodChange(FoodLevelChangeEvent event) {
-        //TODO: Testen, ob nur event.getEntity() keinen Hunger verliert
         if ((event.getEntity() instanceof Player) && Game.instance().getInvulnerable().contains(event.getEntity().getUniqueId())) {
             event.setCancelled(true);
         }
@@ -21,7 +20,6 @@ public class Basic implements Listener {
 
     @EventHandler
     public void healthChange(EntityDamageEvent event) {
-        //TODO: Testen, ob nur event.getEntity() kein Leben verliert
         if (event.getEntity() instanceof Player && Game.instance().getInvulnerable().contains(event.getEntity().getUniqueId())) {
             event.setCancelled(true);
         }
@@ -29,8 +27,7 @@ public class Basic implements Listener {
 
     @EventHandler
     public void dealingDamage(EntityDamageByEntityEvent event) {
-        //TODO: Testen, ob nur event.getEntity() kein Leben verliert
-        if (event.getDamager() instanceof Player && Game.instance().getInvulnerable().contains(event.getEntity().getUniqueId())) {
+        if (event.getDamager() instanceof Player && Game.instance().getInvulnerable().contains(event.getDamager().getUniqueId())) {
             event.setCancelled(true);
         }
     }

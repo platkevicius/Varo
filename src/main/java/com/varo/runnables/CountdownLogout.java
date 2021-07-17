@@ -2,9 +2,12 @@ package com.varo.runnables;
 
 import com.varo.Game;
 import com.varo.util.ChatUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+
+import java.util.Objects;
 
 public class CountdownLogout implements Runnable {
     private final Plugin plugin;
@@ -17,7 +20,7 @@ public class CountdownLogout implements Runnable {
         this.plugin = plugin;
         this.player = player;
 
-        this.counter = 10;
+        this.counter = 1200;
     }
 
     @Override
@@ -26,7 +29,8 @@ public class CountdownLogout implements Runnable {
             Game.instance().getAlreadyJoined().remove(player.getUniqueId());
             Game.instance().getPlayTimeUsedUp().add(player.getUniqueId());
 
-            player.kickPlayer("Deine heutige Zeit auf dem Server ist aufgebraucht!");
+            if (player.isOnline())
+                Objects.requireNonNull(Bukkit.getPlayer(player.getUniqueId())).kickPlayer("Deine heutige Zeit auf dem Server ist aufgebraucht!");
 
             plugin.getServer().getScheduler().cancelTask(taskID);
         }

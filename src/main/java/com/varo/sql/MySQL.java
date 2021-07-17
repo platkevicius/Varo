@@ -20,7 +20,8 @@ public class MySQL {
                                                  "alive BOOLEAN, lastLogging DATE, online BOOLEAN, x DOUBLE, y DOUBLE, z DOUBLE);");
             connection.createStatement().execute("CREATE TABLE IF NOT EXISTS UserKills (id INT PRIMARY KEY AUTO_INCREMENT, killer VARCHAR(64), killed VARCHAR(64));");
             connection.createStatement().execute("CREATE TABLE IF NOT EXISTS LootBox(id INT PRIMARY KEY AUTO_INCREMENT, x DOUBLE, y DOUBLE, z DOUBLE, opened BOOLEAN)");
-            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS BorderCoordinates(id INT PRIMARY KEY AUTO_INCREMENT, x DOUBLE, y DOUBLE, z DOUBLE, radius INT)");
+            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS BorderCoordinates(id INT PRIMARY KEY AUTO_INCREMENT, x DOUBLE, y DOUBLE, z DOUBLE, radius DOUBLE)");
+            connection.createStatement().execute("CREATE TABLE IF NOT EXISTS Teams(id INT PRIMARY KEY AUTO_INCREMENT, player1 VARCHAR(64), player2 VARCHAR(64))");
         }
         catch (SQLException throwables) {
             throwables.printStackTrace();

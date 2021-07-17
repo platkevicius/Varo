@@ -21,6 +21,11 @@ public class KillEvent implements Listener {
 
         if (killer != null && killed != null)
             userSQL.addKill(killer, killed);
+
+        if (killed != null) {
+            userSQL.dieUser(killed);
+            killed.kickPlayer("Du bist gestorben und somit nicht mehr in Varo dabei!");
+        }
     }
 
 }
