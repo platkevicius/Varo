@@ -18,8 +18,8 @@ public class BorderSQL {
     public void createBorder(Location middle, int radius) {
         try {
             PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement("INSERT INTO BorderCoordinates(x, y, z, radius) VALUES (" +
-                                                                                         "'" + middle.getX() + "', '" + middle.getY() + "', '" + middle.getZ() + "'," +
-                                                                                         "'" + radius + "')");
+                    "'" + middle.getX() + "', '" + middle.getY() + "', '" + middle.getZ() + "'," +
+                    "'" + radius + "')");
 
             preparedStatement.execute();
             preparedStatement.close();

@@ -7,3 +7,6 @@ commands:
   start:
     description: Startet Varo
     usage: /<command>
+  spawn:
+    description: Setzt dies Spawns für die Spieler
+    usage: /<command>

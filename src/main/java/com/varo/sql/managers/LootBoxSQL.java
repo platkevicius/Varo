@@ -18,10 +18,10 @@ public class LootBoxSQL {
     public void createNewLootBox(Location location) {
         try {
             PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement("INSERT INTO LootBox (x, y, z, opened) " +
-                                                                                         "VALUES ('" + location.getX() + "'," +
-                                                                                         "'" + location.getY() + "'," +
-                                                                                         "'" + location.getZ() + "')," +
-                                                                                         "'" + false + "'");
+                    "VALUES ('" + location.getX() + "'," +
+                    "'" + location.getY() + "'," +
+                    "'" + location.getZ() + "')," +
+                    "'" + false + "'");
 
             preparedStatement.execute();
             preparedStatement.close();
@@ -63,7 +63,7 @@ public class LootBoxSQL {
     public void setOpened(int id) {
         try {
             PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement("UPDATE LootBox SET opened = " + false + " WHERE " +
-                                                                                         "id = '" + id + "'");
+                    "id = '" + id + "'");
             preparedStatement.execute();
 
             preparedStatement.close();

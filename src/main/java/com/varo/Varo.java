@@ -1,5 +1,6 @@
 package com.varo;
 
+import com.varo.commands.Spawn;
 import com.varo.commands.Start;
 import com.varo.listener.Basic;
 import com.varo.listener.JoinEvent;
@@ -11,6 +12,8 @@ import com.varo.sql.managers.LootBoxSQL;
 import com.varo.sql.managers.UserSQL;
 import com.varo.util.Config;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Objects;
 
 public class Varo extends JavaPlugin {
 
@@ -53,7 +56,8 @@ public class Varo extends JavaPlugin {
 
 
     private void registerCommands() {
-        getCommand("start").setExecutor(new Start(this));
+        Objects.requireNonNull(getCommand("start")).setExecutor(new Start(this));
+        Objects.requireNonNull(getCommand("spawn")).setExecutor(new Spawn());
     }
 
     private void registerListener() {
