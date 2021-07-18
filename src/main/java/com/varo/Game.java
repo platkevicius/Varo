@@ -21,6 +21,7 @@ public class Game {
     private final List<UUID> invulnerable = new ArrayList<>();
     private final List<UUID> playTimeUsedUp = new ArrayList<>();
     private final List<UUID> alreadyJoined = new ArrayList<>();
+    private final List<Location> redstoneTorches = new ArrayList<>();
 
     private Border border;
 
@@ -67,5 +68,9 @@ public class Game {
 
     public List<UUID> getAlreadyJoined() {
         return alreadyJoined;
+    }
+
+    public List<Location> getRedstoneTorches() {
+        return redstoneTorches;
     }
 }

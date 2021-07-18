@@ -50,4 +50,8 @@ public class LocationUtil {
         return new Location(Bukkit.getWorld(world), x, y, z, (float) yaw, (float) pitch);
     }
 
+    public FileConfiguration getConfiguration() {
+        return configuration;
+    }
+
 }

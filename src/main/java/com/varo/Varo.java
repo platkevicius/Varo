@@ -4,6 +4,7 @@ import com.varo.commands.Spawn;
 import com.varo.commands.SpawnGenerator;
 import com.varo.commands.Start;
 import com.varo.listener.*;
+import com.varo.manager.LootBoxManager;
 import com.varo.models.Border;
 import com.varo.sql.MySQL;
 import com.varo.sql.SqlCredentials;
@@ -27,6 +28,7 @@ public class Varo extends JavaPlugin {
     private UserSQL userSQL;
 
     private Border border;
+    private LootBoxManager lootBoxManager;
 
     @Override
     public void onDisable() {
@@ -51,7 +53,9 @@ public class Varo extends JavaPlugin {
         borderSQL = new BorderSQL(mySQL);
         lootBoxSQL = new LootBoxSQL(mySQL);
         userSQL = new UserSQL(mySQL);
+
         border = new Border(borderSQL);
+        lootBoxManager = new LootBoxManager(lootBoxSQL);
 
         registerCommands();
         registerListener();
@@ -69,7 +73,7 @@ public class Varo extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Basic(), this);
         getServer().getPluginManager().registerEvents(new LeaveEvent(this), this);
         getServer().getPluginManager().registerEvents(new LoginEvent(userSQL), this);
-        getServer().getPluginManager().registerEvents(new KillEvent(userSQL), this);
+        getServer().getPluginManager().registerEvents(new KillEvent(userSQL, border), this);
     }
 
 }

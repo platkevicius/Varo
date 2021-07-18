@@ -25,15 +25,20 @@ public class Border {
 
         worldBorder.setCenter(location);
         worldBorder.setSize(radius);
+        this.radius = radius;
 
         borderSQL.createBorder(location, radius);
     }
 
     public void decreseBorder() {
-        radius -= 10;
+        radius *= 0.96;
 
         worldBorder.setSize(radius);
         borderSQL.updateRadius(radius);
+    }
+
+    public double getRadius() {
+        return radius;
     }
 
 }
