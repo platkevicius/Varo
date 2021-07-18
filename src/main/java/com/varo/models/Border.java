@@ -25,6 +25,7 @@ public class Border {
 
         worldBorder.setCenter(location);
         worldBorder.setSize(radius);
+        worldBorder.setDamageAmount(1D);
         this.radius = radius;
 
         borderSQL.createBorder(location, radius);
