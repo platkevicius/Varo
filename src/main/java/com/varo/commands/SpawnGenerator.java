@@ -34,40 +34,15 @@ public class SpawnGenerator implements CommandExecutor {
                 int distanceHoles = 10;
                 int radius = (int) Math.rint((distanceHoles * playersAmount) / (2 * Math.PI));
 
-                Location right = new Location(commander.getWorld(), x + radius, y, z);
-                setHole(right, commander);
-
-                Location left = new Location(commander.getWorld(), x - radius, y, z);
-                setHole(left, commander);
-
-                if (playersAmount % 4 == 0) {
-                    Location up = new Location(commander.getWorld(), x, y, z + radius);
-                    setHole(up, commander);
-
-                    Location down = new Location(commander.getWorld(), x, y, z - radius);
-                    setHole(down, commander);
-                }
-
                 double arc = 2 * Math.PI / playersAmount;
-                double arcCounter = arc;
+                double arcCounter = 0;
 
-                while (arcCounter < Math.PI / 2) {
-                    int xSwitch = (int) Math.rint(Math.cos(arcCounter)) * radius;
-                    int zSwitch = (int) Math.rint(Math.sin(arcCounter)) * radius;
+                while (arcCounter < 2 * Math.PI) {
+                    int xSwitch = (int) Math.rint(Math.sin(arcCounter)) * radius;
+                    int zSwitch = (int) Math.rint(Math.cos(arcCounter)) * radius;
 
-                    Location upperRight = new Location(commander.getWorld(), x + xSwitch, y, z + zSwitch);
-                    setHole(upperRight, commander);
-
-                    /*Location upperLeft = new Location(commander.getWorld(), x - xSwitch, y, Math.rint(z + zSwitch));
-                    setHole(upperLeft, commander);
-
-                    Location lowerRight = new Location(commander.getWorld(), x + xSwitch, y, z - zSwitch);
-                    setHole(lowerRight, commander);
-
-                    Location lowerLeft = new Location(commander.getWorld(), x - xSwitch, y, z - zSwitch);
-                    setHole(lowerLeft, commander);
-
-                     */
+                        Location current = new Location(commander.getWorld(), x + xSwitch, y, z + zSwitch);
+                        setHole(current, commander);
 
                     arcCounter += arc;
                 }
