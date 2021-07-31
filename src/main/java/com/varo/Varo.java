@@ -1,5 +1,6 @@
 package com.varo;
 
+import com.varo.commands.LootBoxCommand;
 import com.varo.commands.Spawn;
 import com.varo.commands.SpawnGenerator;
 import com.varo.commands.Start;
@@ -66,6 +67,7 @@ public class Varo extends JavaPlugin {
         Objects.requireNonNull(getCommand("start")).setExecutor(new Start(this));
         Objects.requireNonNull(getCommand("spawn")).setExecutor(new Spawn());
         Objects.requireNonNull(getCommand("generate")).setExecutor(new SpawnGenerator(border));
+        Objects.requireNonNull(getCommand("lootbox")).setExecutor(new LootBoxCommand(lootBoxManager));
     }
 
     private void registerListener() {

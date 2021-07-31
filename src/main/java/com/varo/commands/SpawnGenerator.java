@@ -1,12 +1,9 @@
 package com.varo.commands;
 
-import com.varo.Game;
 import com.varo.models.Border;
 import com.varo.util.LocationUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;

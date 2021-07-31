@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class LootBoxManager {
         lootBoxs = lootBoxSQL.getLotBoxes();
     }
 
-    public void spawnLootBox() {
+    public void spawnLootBox(ItemStack[] items) {
         if (!lootBoxs.isEmpty()) {
             LootBox lootBox = lootBoxs.remove(0);
             lootBoxSQL.setCreated(lootBox.getId());
@@ -33,8 +34,12 @@ public class LootBoxManager {
 
             Inventory inv = chest.getInventory();
 
-            //TODO: define items which should be placed in the chest
+            inv.setContents(items);
         }
+    }
+
+    public void createLootbox(Location location) {
+        lootBoxSQL.createNewLootBox(location);
     }
 
 }

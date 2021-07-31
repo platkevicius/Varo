@@ -1,12 +1,10 @@
 package com.varo;
 
 import com.varo.models.Border;
-import com.varo.util.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitScheduler;
-import java.time.LocalTime;
+
 import java.util.*;
 
 public class Game {

@@ -1,6 +1,6 @@
 name: Varo
 version: 0.1
-author: clyko & dplat
+author: Christopher Lyko & Daniel Platkevicius
 main: com.varo.Varo
 api-version: 1.17
 
@@ -13,4 +13,7 @@ commands:
     usage: /<command>
   generate:
     description: Generiert Spawn
+    usage: /<command>
+  lootbox:
+    description: Setzt den Spawn für eine Lootbox
     usage: /<command>
