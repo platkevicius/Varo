@@ -21,7 +21,7 @@ public class LootBoxManager {
         lootBoxs = lootBoxSQL.getLotBoxes();
     }
 
-    public void spawnLootBox(ItemStack[] items) {
+    public void spawnLootBox(List<ItemStack> items) {
         if (!lootBoxs.isEmpty()) {
             LootBox lootBox = lootBoxs.remove(0);
             lootBoxSQL.setCreated(lootBox.getId());
@@ -34,7 +34,10 @@ public class LootBoxManager {
 
             Inventory inv = chest.getInventory();
 
-            inv.setContents(items);
+            for (int i = 0; i < items.size(); i++) {
+                inv.setItem(i, items.get(i));
+            }
+
         }
     }
 
@@ -42,4 +45,14 @@ public class LootBoxManager {
         lootBoxSQL.createNewLootBox(location);
     }
 
+    public boolean hasNext() {
+        List<LootBox> lootBoxes = lootBoxSQL.getLotBoxes();
+        
+        return lootBoxes.size() != 0;
+    }
+
+    //TODO: Make this method dependent on the state of the game (players alive and time being played)
+    public List<ItemStack> getLootBoxContent() {
+        return List.of(new ItemStack(Material.DIAMOND), new ItemStack(Material.DIAMOND), new ItemStack(Material.DIAMOND));
+    }
 }
