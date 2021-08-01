@@ -1,6 +1,7 @@
 package com.varo.runnables;
 
 import com.varo.manager.LootBoxManager;
+import com.varo.util.ChatUtil;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
