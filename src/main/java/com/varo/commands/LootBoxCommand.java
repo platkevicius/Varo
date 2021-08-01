@@ -21,7 +21,7 @@ public class LootBoxCommand implements CommandExecutor {
         if (!(commandSender instanceof Player)) return true;
 
         Player player = (Player) commandSender;
-        if (command.getName().equalsIgnoreCase("lootbox")) {
+        if (player.isOp()) {
             lootBoxManager.createLootbox(player.getLocation());
             chatUtil.sendMessage(player, "Lootbox wurde erfolgreich gesetzt und in der Datenbank gespeichert");
         }

@@ -28,7 +28,7 @@ public class SpawnGenerator implements CommandExecutor {
         if (commandSender instanceof Player) {
             Player commander = (Player) commandSender;
 
-            if (commander.getName().equals("PlayNationDE")) {
+            if (commander.getName().equals("PlayNationDE") || commander.isOp()) {
                 Location commanderLoc = commander.getLocation();
                 //border.createBorder(commanderLoc, 100);
 

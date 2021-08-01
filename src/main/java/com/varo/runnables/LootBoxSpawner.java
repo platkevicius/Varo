@@ -4,8 +4,6 @@ import com.varo.manager.LootBoxManager;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.time.LocalTime;
-
 public class LootBoxSpawner implements Runnable {
 
     private final Plugin plugin;
@@ -21,9 +19,8 @@ public class LootBoxSpawner implements Runnable {
         if (lootBoxManager.hasNext()) {
             lootBoxManager.spawnLootBox(lootBoxManager.getLootBoxContent());
 
-            //TOOD: run new tasklater
             BukkitScheduler scheduler = plugin.getServer().getScheduler();
-            scheduler.runTaskLater(plugin, new LootBoxSpawner(plugin, lootBoxManager), 100L);
+            scheduler.runTaskLater(plugin, new LootBoxSpawner(plugin, lootBoxManager), lootBoxManager.delayUntilNewSpawn);
         }
     }
 }

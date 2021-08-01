@@ -30,7 +30,7 @@ public class Start implements CommandExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (commandSender instanceof Player) {
             Player player = (Player) commandSender;
-            if (player.getName().equals("PlayNationDE") && Game.instance().getCurrent() == GameState.WARMUP && !Game.instance().isStarted()) {
+            if (player.getName().equals("PlayNationDE") && Game.instance().getCurrent() == GameState.WARMUP && !Game.instance().isStarted() || player.isOp()) {
                 Game.instance().setStarted(true);
                 player.getWorld().setTime(6000);
 
@@ -47,7 +47,7 @@ public class Start implements CommandExecutor {
                 BukkitScheduler lootBoxScheduler = Bukkit.getScheduler();
                 LootBoxSpawner lootBoxSpawner = new LootBoxSpawner(plugin, lootBoxManager);
 
-                lootBoxScheduler.runTaskLater(plugin, lootBoxSpawner, 100L);
+                lootBoxScheduler.runTaskLater(plugin, lootBoxSpawner, lootBoxManager.delayUntilNewSpawn);
 
                 return true;
             }

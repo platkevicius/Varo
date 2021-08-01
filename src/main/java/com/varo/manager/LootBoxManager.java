@@ -16,6 +16,8 @@ public class LootBoxManager {
     private final List<LootBox> lootBoxs;
     private final LootBoxSQL lootBoxSQL;
 
+    public final long delayUntilNewSpawn = 200L;
+
     public LootBoxManager(LootBoxSQL lootBoxSQL) {
         this.lootBoxSQL = lootBoxSQL;
         lootBoxs = lootBoxSQL.getLotBoxes();
@@ -33,6 +35,7 @@ public class LootBoxManager {
             Chest chest = (Chest) block.getState();
 
             Inventory inv = chest.getInventory();
+            chest.setCustomName("Lootbox: " + lootBox.getId());
 
             for (int i = 0; i < items.size(); i++) {
                 inv.setItem(i, items.get(i));
@@ -46,13 +49,12 @@ public class LootBoxManager {
     }
 
     public boolean hasNext() {
-        List<LootBox> lootBoxes = lootBoxSQL.getLotBoxes();
-        
-        return lootBoxes.size() != 0;
+        return !lootBoxs.isEmpty();
     }
 
     //TODO: Make this method dependent on the state of the game (players alive and time being played)
     public List<ItemStack> getLootBoxContent() {
         return List.of(new ItemStack(Material.DIAMOND), new ItemStack(Material.DIAMOND), new ItemStack(Material.DIAMOND));
     }
+
 }
