@@ -8,6 +8,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class Basic implements Listener {
 
@@ -36,6 +37,17 @@ public class Basic implements Listener {
     public void entityTarget(EntityTargetEvent event) {
         if (event.getTarget() instanceof Player && Game.instance().getInvulnerable().contains(event.getTarget().getUniqueId())) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void playerQuits(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        int ping = event.getPlayer().getPing();
+
+        if (ping >= 400) {
+            Game.instance().getBanned().add(player.getUniqueId());
+            player.kickPlayer("Aufgrund eines Regelverstoßes wurdest Du aus dem Projekt ausgeschlossen.");
         }
     }
 }

@@ -19,7 +19,7 @@ public class Spawn implements CommandExecutor {
         if (!(commandSender instanceof Player))
             return true;
 
-        if (!commandSender.getName().equalsIgnoreCase("PlayNationDE"))
+        if (!commandSender.getName().equalsIgnoreCase("PlayNationDE") && !commandSender.isOp())
             return true;
 
         Player player = (Player) commandSender;

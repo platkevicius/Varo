@@ -2,15 +2,19 @@ package com.varo.listener;
 
 import com.varo.models.Border;
 import com.varo.sql.managers.UserSQL;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.inventory.Inventory;
 
 public class KillEvent implements Listener {
 
     private final UserSQL userSQL;
-    private Border border;
+    private final Border border;
 
     public KillEvent(UserSQL userSQL, Border border) {
         this.userSQL = userSQL;
@@ -30,6 +34,16 @@ public class KillEvent implements Listener {
             killed.kickPlayer("Du bist gestorben und somit aus Varo ausgeschieden!");
 
             border.decreseBorder();
+
+            //TODO: to be tested
+            Location loc = killed.getLocation();
+
+            loc.getBlock().setType(Material.CHEST);
+            Chest chest = (Chest) loc.getBlock().getState();
+
+            Inventory inv = chest.getInventory();
+            inv.addItem(killed.getInventory().getContents());
+            inv.addItem(killed.getInventory().getArmorContents());
         }
     }
 }

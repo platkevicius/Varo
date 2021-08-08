@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class LootBoxSQL {
 
@@ -21,13 +22,20 @@ public class LootBoxSQL {
 
     public void createNewLootBox(Location location) {
         try {
-            PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement("INSERT INTO LootBox (world, x, y, z, opened, created) " +
-                    "VALUES ('" + location.getWorld().getUID() + "'," +
+            PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement("INSERT INTO LootBox (world, x, y, z, opened, created) VALUES (?, ?, ?, ?, ?, ?)");
+                    /*("VALUES ('" + location.getWorld().getUID() + "'," +
                     "'" + location.getX() + "'," +
                     "'" + location.getY() + "'," +
-                    "'" + location.getZ() + "')," +
+                    "'" + location.getZ() + "'," +
                     "'" + false + "', " +
-                    "'" + false + "'");
+                    "'" + false + "');");
+*/
+            preparedStatement.setString(1, location.getWorld().getUID().toString());
+            preparedStatement.setDouble(2, location.getX());
+            preparedStatement.setDouble(3, location.getY());
+            preparedStatement.setDouble(4, location.getZ());
+            preparedStatement.setBoolean(5, false);
+            preparedStatement.setBoolean(6, false);
 
             preparedStatement.execute();
             preparedStatement.close();
@@ -52,7 +60,7 @@ public class LootBoxSQL {
                 double z = resultSet.getDouble(5);
                 boolean opened = resultSet.getBoolean(6);
 
-                LootBox lootBox = new LootBox(id, new Location(Bukkit.getWorld(world), x, y, z), opened);
+                LootBox lootBox = new LootBox(id, new Location(Bukkit.getWorld(UUID.fromString(world)), x, y, z), opened);
                 lootBoxes.add(lootBox);
             }
 

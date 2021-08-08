@@ -22,5 +22,8 @@ public class LoginEvent implements Listener {
             !userSQL.isAlive(event.getPlayer())) {
             event.disallow(PlayerLoginEvent.Result.KICK_FULL, "Zeit verbraucht");
         }
+        else if (Game.instance().getBanned().contains(event.getPlayer().getUniqueId())) {
+            event.disallow(PlayerLoginEvent.Result.KICK_FULL, "Aufgrund eines Regelverstoßes wurdest Du aus Varo ausgeschlossen");
+        }
     }
 }

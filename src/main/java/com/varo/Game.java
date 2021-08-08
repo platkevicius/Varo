@@ -1,12 +1,10 @@
 package com.varo;
 
 import com.varo.models.Border;
-import com.varo.util.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitScheduler;
-import java.time.LocalTime;
+
 import java.util.*;
 
 public class Game {
@@ -21,7 +19,7 @@ public class Game {
     private final List<UUID> invulnerable = new ArrayList<>();
     private final List<UUID> playTimeUsedUp = new ArrayList<>();
     private final List<UUID> alreadyJoined = new ArrayList<>();
-    private final List<Location> redstoneTorches = new ArrayList<>();
+    private final List<UUID> banned = new ArrayList<>();
 
     private Border border;
 
@@ -70,7 +68,7 @@ public class Game {
         return alreadyJoined;
     }
 
-    public List<Location> getRedstoneTorches() {
-        return redstoneTorches;
+    public List<UUID> getBanned() {
+        return banned;
     }
 }
