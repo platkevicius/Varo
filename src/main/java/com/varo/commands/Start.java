@@ -37,11 +37,16 @@ public class Start implements CommandExecutor {
                 Game.instance().setStarted(true);
                 player.getWorld().setTime(6000);
 
+                for (Player player1 : Bukkit.getOnlinePlayers()) {
+                    Location loc = player1.getLocation();
+                    player1.teleport(new Location(player1.getWorld(), loc.getX(), loc.getY() + 3, loc.getZ()));
+                }
 
-
-                for (String path : locationUtil.getConfiguration().getConfigurationSection("torches").getKeys(false)) {
+                /*for (String path : locationUtil.getConfiguration().getConfigurationSection("torches").getKeys(false)) {
                     locationUtil.getLocation("torches." + path).getBlock().setType(Material.REDSTONE_TORCH);
                 }
+
+                 */
 
                 BukkitScheduler scheduler = Bukkit.getScheduler();
                 CountdownStart countdownStart = new CountdownStart(plugin);
