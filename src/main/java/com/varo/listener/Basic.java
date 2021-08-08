@@ -1,14 +1,21 @@
 package com.varo.listener;
 
 import com.varo.Game;
+import com.varo.GameState;
+import com.varo.util.ChatUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityTargetEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Basic implements Listener {
 
@@ -48,6 +55,28 @@ public class Basic implements Listener {
         if (ping >= 400) {
             Game.instance().getBanned().add(player.getUniqueId());
             player.kickPlayer("Aufgrund eines Regelverstoßes wurdest Du aus dem Projekt ausgeschlossen.");
+        }
+    }
+
+    @EventHandler
+    public void craftItem(CraftItemEvent event) {
+        for (Recipe recipe : Bukkit.getServer().getRecipesFor(new ItemStack(Material.FISHING_ROD))) {
+            if (event.getRecipe().getResult().equals(recipe.getResult())) {
+                if (event.getWhoClicked() instanceof Player) {
+                    event.setCancelled(true);
+                    Player crafter = (Player) event.getWhoClicked();
+                    crafter.sendMessage("Dieses Item ist gebannt!");
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void createPortal(EntityCreatePortalEvent event) {
+        if (event.getEntity() instanceof Player && Game.instance().equals(GameState.INGAME)) {
+            event.setCancelled(true);
+            Player crafter = (Player) event.getEntity();
+            crafter.sendMessage("Es dürfen keine weiteren Portale hergestellt werden!");
         }
     }
 }

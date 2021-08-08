@@ -1,22 +1,33 @@
 package com.varo.commands;
 
 import com.varo.models.Border;
+import com.varo.models.ItemPool;
 import com.varo.util.LocationUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Chest;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class SpawnGenerator implements CommandExecutor {
 
     private final Border border;
     private LocationUtil locationUtil = new LocationUtil();
-    private int counter;
+    private List<ItemStack> items = ItemPool.instance().getItemPoolSpawnChests();
 
     public SpawnGenerator(Border border) {
         this.border = border;
@@ -38,20 +49,72 @@ public class SpawnGenerator implements CommandExecutor {
 
                 int playersAmount = Integer.parseInt(strings[0]);
                 int distanceHoles = 10;
-                double radius = (distanceHoles * playersAmount) / (2 * Math.PI);
+                double radiusHoles = (distanceHoles * playersAmount) / (2 * Math.PI);
+                double arcHoles = 2 * Math.PI / playersAmount;
+                double arcCounterHoles = 0;
 
-                double arc = 2 * Math.PI / playersAmount;
-                double arcCounter = 0;
-
-                counter = 0;
-                while (arcCounter < 2 * Math.PI) {
-                    double xSwitch = Math.sin(arcCounter) * radius;
-                    double zSwitch = Math.cos(arcCounter) * radius;
+                while (arcCounterHoles < 2 * Math.PI) {
+                    double xSwitch = Math.sin(arcCounterHoles) * radiusHoles;
+                    double zSwitch = Math.cos(arcCounterHoles) * radiusHoles;
 
                     Location current = new Location(commander.getWorld(), x + xSwitch, y, z + zSwitch);
                     setHole(current, commander);
 
-                    arcCounter += arc;
+                    arcCounterHoles += arcHoles;
+                }
+
+                int chestAmount = playersAmount / 2;
+                int distanceChests = 4;
+                double radiusChests = (distanceChests * chestAmount) / (2 * Math.PI);
+                double arcChests = 2 * Math.PI / chestAmount;
+                double arcCounterChests = 0;
+
+                while (arcCounterChests < 2 * Math.PI) {
+                    double xSwitch = Math.sin(arcCounterChests) * radiusChests;
+                    double zSwitch = Math.cos(arcCounterChests) * radiusChests;
+
+                    Location current = new Location(commander.getWorld(), x + xSwitch, y, z + zSwitch);
+                    Location normedMinusOne = normLoc(current, commander);
+                    Location normed = new Location(commander.getWorld(), normedMinusOne.getX(),normedMinusOne.getY() + 1, normedMinusOne.getZ());
+                    Block block = normed.getBlock();
+                    block.setType(Material.CHEST);
+                    BlockData blockData = block.getBlockData();
+
+                    if (blockData instanceof Directional) {
+                        if (arcCounterChests <= Math.PI / 2)
+                            ((Directional) blockData).setFacing(BlockFace.EAST);
+                        else if (arcCounterChests <= Math.PI)
+                            ((Directional) blockData).setFacing(BlockFace.NORTH);
+                        else if (arcCounterChests <= 1.5 * Math.PI)
+                            ((Directional) blockData).setFacing(BlockFace.WEST);
+                        else
+                            ((Directional) blockData).setFacing(BlockFace.SOUTH);
+
+                        block.setBlockData(blockData);
+                    }
+
+                    if (normed.getBlock().getState() instanceof Chest) {
+                        Chest chest = (Chest) normed.getBlock().getState();
+                        Inventory inv = chest.getBlockInventory();
+
+                        if (!items.isEmpty()) {
+                            int randomAmountOfItems = new Random().nextInt(10);
+                            List<Integer> generatedChestIndexes = new ArrayList<>();
+
+                            while (randomAmountOfItems != 0) {
+                                int chestIndex = new Random().nextInt(27);
+                                while (generatedChestIndexes.contains(chestIndex)) {
+                                    chestIndex = new Random().nextInt(27);
+                                }
+
+                                inv.setItem(chestIndex, items.remove(new Random().nextInt(items.size())));
+                                generatedChestIndexes.add(chestIndex);
+                                randomAmountOfItems--;
+                            }
+                        }
+                    }
+
+                    arcCounterChests += arcChests;
                 }
 
                 return true;
@@ -112,9 +175,10 @@ public class SpawnGenerator implements CommandExecutor {
 
                 d = new Location(commander.getWorld(), dummy.getX(), dummy.getY(), dummy.getZ() - 1);
                 d.getBlock().setType(Material.STONE);
-            }
+            } else {
+                dummy.getBlock().setType(Material.STONE);
 
-            else dummy.getBlock().setType(Material.STONE);
+            }
         }
 
 
