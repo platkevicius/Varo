@@ -59,19 +59,6 @@ public class Basic implements Listener {
     }
 
     @EventHandler
-    public void craftItem(CraftItemEvent event) {
-        for (Recipe recipe : Bukkit.getServer().getRecipesFor(new ItemStack(Material.FISHING_ROD))) {
-            if (event.getRecipe().getResult().equals(recipe.getResult())) {
-                if (event.getWhoClicked() instanceof Player) {
-                    event.setCancelled(true);
-                    Player crafter = (Player) event.getWhoClicked();
-                    crafter.sendMessage("Dieses Item ist gebannt!");
-                }
-            }
-        }
-    }
-
-    @EventHandler
     public void createPortal(EntityCreatePortalEvent event) {
         if (event.getEntity() instanceof Player && Game.instance().equals(GameState.INGAME)) {
             event.setCancelled(true);

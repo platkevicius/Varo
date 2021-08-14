@@ -33,7 +33,7 @@ public class CountdownLogin implements Runnable {
             player.getPlayer().setGameMode(GameMode.SURVIVAL);
 
             CountdownLogout countdownLogout = new CountdownLogout(plugin, player);
-            final int idTime = ingameTime.scheduleSyncRepeatingTask(plugin, countdownLogout , 0L, 20L);
+            final int idTime = ingameTime.scheduleSyncRepeatingTask(plugin, countdownLogout, 0L, 20L);
             countdownLogout.setTaskID(idTime);
 
             plugin.getServer().getScheduler().cancelTask(taskID);
