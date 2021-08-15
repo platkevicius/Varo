@@ -49,7 +49,7 @@ public class JoinEvent implements Listener {
                 System.out.println("Die Location für den Spieler");
             }
         } else if (Game.instance().getCurrent() == GameState.INGAME) {
-            event.setJoinMessage(ChatColor.RED + event.getPlayer().getName() + ChatColor.GOLD + " hat den Server betreten!");
+            event.setJoinMessage(ChatColor.YELLOW + event.getPlayer().getName() + ChatColor.AQUA + " hat den Server betreten!");
 
             if (!Game.instance().getAlreadyJoined().contains(event.getPlayer().getUniqueId()) && !Game.instance().getInvulnerable().contains(event.getPlayer().getUniqueId())) {
                 Game.instance().getInvulnerable().add(event.getPlayer().getUniqueId());

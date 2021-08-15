@@ -14,7 +14,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 public class CountdownLogin implements Runnable {
     private final Plugin plugin;
     private final Player player;
-    private int counter = 5;
+    private int counter = 15;
     private ChatUtil chatUtil = new ChatUtil();
     private int taskID;
 
@@ -28,7 +28,7 @@ public class CountdownLogin implements Runnable {
     @Override
     public void run() {
         if (counter == 0 && player.isOnline()) {
-            chatUtil.sendAllPlayers(ChatColor.RED + player.getName() + ChatColor.GOLD + " ist jetzt angreifbar!");
+            chatUtil.sendAllPlayers(ChatColor.YELLOW + player.getName() + ChatColor.AQUA + " ist" + ChatColor.YELLOW + " jetzt angreifbar.");
             Game.instance().getInvulnerable().remove(player.getUniqueId());
             player.getPlayer().setGameMode(GameMode.SURVIVAL);
 
@@ -37,8 +37,10 @@ public class CountdownLogin implements Runnable {
             countdownLogout.setTaskID(idTime);
 
             plugin.getServer().getScheduler().cancelTask(taskID);
-        } else if ((counter % 5 == 0 || counter == 4 || counter == 3 || counter == 2 || counter == 1) && player.isOnline()) {
-            chatUtil.sendAllPlayers(ChatColor.RED + player.getName() + ChatColor.GOLD + " ist in " + ChatColor.RED + counter + ChatColor.GOLD + " Sekunden angreifbar!");
+        } else if ((counter % 5 == 0 || counter == 4 || counter == 3 || counter == 2) && player.isOnline()) {
+            chatUtil.sendAllPlayers(ChatColor.YELLOW + player.getName() + ChatColor.AQUA + " ist in " + ChatColor.YELLOW + counter + ChatColor.AQUA + " Sekunden angreifbar.");
+        } else if (counter == 1 && player.isOnline()) {
+            chatUtil.sendAllPlayers(ChatColor.YELLOW + player.getName() + ChatColor.AQUA + " ist in " + ChatColor.YELLOW + "einer" + ChatColor.AQUA + " Sekunde angreifbar.");
         }
         counter--;
     }

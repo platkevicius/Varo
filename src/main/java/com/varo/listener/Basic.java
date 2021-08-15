@@ -4,6 +4,7 @@ import com.varo.Game;
 import com.varo.GameState;
 import com.varo.util.ChatUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -54,7 +55,7 @@ public class Basic implements Listener {
 
         if (ping >= 400) {
             Game.instance().getBanned().add(player.getUniqueId());
-            player.kickPlayer("Aufgrund eines Regelverstoßes wurdest Du aus dem Projekt ausgeschlossen.");
+            player.kickPlayer(ChatColor.DARK_RED + "Aufgrund eines Regelverstoßes wurdest Du aus dem Projekt ausgeschlossen.");
         }
     }
 
@@ -63,7 +64,7 @@ public class Basic implements Listener {
         if (event.getEntity() instanceof Player && Game.instance().equals(GameState.INGAME)) {
             event.setCancelled(true);
             Player crafter = (Player) event.getEntity();
-            crafter.sendMessage("Es dürfen keine weiteren Portale hergestellt werden!");
+            crafter.sendMessage(ChatColor.DARK_RED + "Es dürfen keine weiteren Portale gebaut werden!");
         }
     }
 }
