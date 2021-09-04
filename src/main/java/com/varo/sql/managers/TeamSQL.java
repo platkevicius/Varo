@@ -1,12 +1,15 @@
 package com.varo.sql.managers;
 
+import com.varo.models.Team;
 import com.varo.sql.MySQL;
 import org.bukkit.entity.Player;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TeamSQL {
@@ -57,4 +60,23 @@ public class TeamSQL {
                 teams.get(player2.getUniqueId().toString()).equals(player1.getUniqueId().toString());
     }
 
+    public List<Team> getAllTeams() {
+        List<Team> allTeams = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = mySQL.getConnection().prepareStatement("SELECT * FROM TEAMS");
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String user1 = resultSet.getString("playser1");
+                String user2 = resultSet.getString("playser1");
+
+                Team team = new Team(user1, user2);
+                allTeams.add(team);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return allTeams;
+    }
 }

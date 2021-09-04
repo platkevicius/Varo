@@ -28,38 +28,30 @@ public class CountdownLogout implements Runnable {
     public void run() {
         if (counter == 0) {
 
-            double x = player.getLocation().getX();
-            double y = player.getLocation().getY();
-            double z = player.getLocation().getZ();
+            if (!player.isOnline()) {
+                Game.instance().getAlreadyJoined().remove(player.getUniqueId());
+                Game.instance().getPlayTimeUsedUp().add(player.getUniqueId());
+
+                plugin.getServer().getScheduler().cancelTask(taskID);
+                return;
+            }
 
             for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
-                if (Math.sqrt(Math.pow(otherPlayer.getLocation().getX() - x, 2) + Math.pow(otherPlayer.getLocation().getY() - y, 2) + Math.pow(otherPlayer.getLocation().getZ() - z, 2)) <= 50) {
+                if (otherPlayer.getLocation().distance(player.getLocation()) <= 50)
                     enemyNearby = true;
-                }
             }
 
-            if (!player.isOnline()) {
-                if (enemyNearby) {
-                    Game.instance().getBanned().add(player.getUniqueId());
-                }
-                else {
-                    Game.instance().getAlreadyJoined().remove(player.getUniqueId());
-                    Game.instance().getPlayTimeUsedUp().add(player.getUniqueId());
-                }
+            if (!enemyNearby) {
+                Game.instance().getAlreadyJoined().remove(player.getUniqueId());
+                Game.instance().getPlayTimeUsedUp().add(player.getUniqueId());
+                chatUtil.sendAllPlayers(ChatColor.YELLOW + player.getName() + ChatColor.AQUA + " wurde vom Server gekickt.");
+                Objects.requireNonNull(Bukkit.getPlayer(player.getUniqueId())).kickPlayer(ChatColor.DARK_RED + "Deine heutige Zeit auf dem Server ist aufgebraucht." + ChatColor.RED + " Du wurdest deshalb gekickt.");
                 plugin.getServer().getScheduler().cancelTask(taskID);
-            }
-            else {
-                if (!enemyNearby) {
-                    Game.instance().getAlreadyJoined().remove(player.getUniqueId());
-                    Game.instance().getPlayTimeUsedUp().add(player.getUniqueId());
-                    chatUtil.sendAllPlayers(ChatColor.YELLOW + player.getName() + ChatColor.AQUA + " wurde vom Server gekickt.");
-                    Objects.requireNonNull(Bukkit.getPlayer(player.getUniqueId())).kickPlayer(ChatColor.DARK_RED + "Deine heutige Zeit auf dem Server ist aufgebraucht." + ChatColor.RED + " Du wurdest deshalb gekickt.");
-                    plugin.getServer().getScheduler().cancelTask(taskID);
 
-                } else {
-                    chatUtil.sendMessage(player, ChatColor.DARK_RED + "Du bist zu nah an einem Gegner!");
-                }
+            } else {
+                chatUtil.sendMessage(player, ChatColor.DARK_RED + "Du bist zu nah an einem Gegner!");
             }
+
 
         } else if ((counter == 15 || counter == 10 || counter == 5 || counter == 4 || counter == 3 || counter == 2 || counter == 1) && player.isOnline())
             chatUtil.sendAllPlayers(ChatColor.YELLOW + player.getName() + ChatColor.AQUA + " wird in " + ChatColor.YELLOW + counter + ChatColor.AQUA + " Sekunden vom Server gekickt.");

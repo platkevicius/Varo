@@ -2,8 +2,10 @@ package com.varo.listener;
 
 import com.varo.models.Border;
 import com.varo.sql.managers.UserSQL;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,6 +27,9 @@ public class KillEvent implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player killer = event.getEntity().getKiller();
         Player killed = event.getEntity().getPlayer();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.getWorld().playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 5, 1);
+        }
 
         if (killer != null && killed != null)
             userSQL.addKill(killer, killed);

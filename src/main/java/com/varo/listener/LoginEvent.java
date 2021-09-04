@@ -17,14 +17,12 @@ public class LoginEvent implements Listener {
 
     @EventHandler
     public void login(PlayerLoginEvent event) {
-        System.out.println(userSQL.isAlive(event.getPlayer()));
-        System.out.println(event.getPlayer().getUniqueId().toString());
-        if (Game.instance().getPlayTimeUsedUp().contains(event.getPlayer().getUniqueId()) ||
+        /*if (Game.instance().getPlayTimeUsedUp().contains(event.getPlayer().getUniqueId()) ||
             !userSQL.isAlive(event.getPlayer())) {
             event.disallow(PlayerLoginEvent.Result.KICK_FULL, ChatColor.DARK_RED + "Deine heutige Zeit auf dem Server ist aufgebraucht.");
         }
         else if (Game.instance().getBanned().contains(event.getPlayer().getUniqueId())) {
             event.disallow(PlayerLoginEvent.Result.KICK_FULL, ChatColor.DARK_RED + "Aufgrund eines Regelverstoßes wurdest Du aus Varo ausgeschlossen.");
-        }
+        }*/
     }
 }

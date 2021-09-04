@@ -181,7 +181,6 @@ public class SpawnGenerator implements CommandExecutor {
             }
         }
 
-
         //slabs and upper hole
         Location no = new Location(commander.getWorld(), cur.getX() + 1, cur.getY() + 1, cur.getZ());
         no.getBlock().setType(Material.ACACIA_SLAB);

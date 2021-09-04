@@ -9,6 +9,8 @@ import com.varo.util.LocationUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -51,7 +53,7 @@ public class JoinEvent implements Listener {
         } else if (Game.instance().getCurrent() == GameState.INGAME) {
             event.setJoinMessage(ChatColor.YELLOW + event.getPlayer().getName() + ChatColor.AQUA + " hat den Server betreten!");
 
-            if (!Game.instance().getAlreadyJoined().contains(event.getPlayer().getUniqueId()) && !Game.instance().getInvulnerable().contains(event.getPlayer().getUniqueId())) {
+            /*if (!Game.instance().getAlreadyJoined().contains(event.getPlayer().getUniqueId()) && !Game.instance().getInvulnerable().contains(event.getPlayer().getUniqueId())) {
                 Game.instance().getInvulnerable().add(event.getPlayer().getUniqueId());
                 Game.instance().getAlreadyJoined().add(event.getPlayer().getUniqueId());
 
@@ -62,7 +64,8 @@ public class JoinEvent implements Listener {
                 CountdownLogin countdownLogin = new CountdownLogin(plugin, event.getPlayer());
                 final int id = countdown.scheduleSyncRepeatingTask(plugin, countdownLogin, 0L, 20L);
                 countdownLogin.setTaskID(id);
-            }
+            }*/
         }
+            event.getPlayer().getWorld().playSound(event.getPlayer().getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 100L, 100L);
     }
 }

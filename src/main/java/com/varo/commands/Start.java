@@ -31,7 +31,7 @@ public class Start implements CommandExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (commandSender instanceof Player) {
             Player player = (Player) commandSender;
-            if (player.getName().equals("PlayNationDE") && Game.instance().getCurrent() == GameState.WARMUP && !Game.instance().isStarted() || player.isOp()) {
+            if (player.getName().equals("PlayNationDE") && Game.instance().getCurrent() == GameState.WARMUP && !Game.instance().isStarted() && player.isOp()) {
                 Game.instance().setStarted(true);
                 player.getWorld().setTime(6000);
 
